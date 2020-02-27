@@ -79,7 +79,9 @@ class Gadgets(object):
 
     # If this instruction reads and writes to this register
     def __isIterator(self, insn, reg):
-        if insn.id == X86_INS_POP or insn.id == X86_INS_ADD or insn.id == X86_INS_SUB: 
+        if insn.id == X86_INS_POP:
+            return True
+        elif insn.id == X86_INS_ADD or insn.id == X86_INS_SUB: 
             if len(insn.operands) >= 2:
                 op2 = insn.operands[1]
                 # I don't understand this condition; why not check if it reads the register (added here, but not in original)
@@ -125,7 +127,7 @@ class Gadgets(object):
                     lookupRegs.append(op2.mem.index)
 
                 for lookupReg in lookupRegs:
-                    if self.__hasIterator(gadget, i, lookupReg):
+                    if self.__hasIterator(gadget, i+1, lookupReg):
                         return True
             #elif self.__isConveyor(insn):
             #    for op in setter.operands: # Find an iterator for either operand
@@ -135,26 +137,29 @@ class Gadgets(object):
 
     # Determines whether the gadget has an iterator and a loader (if register jump)
     def __isDispatcher(self, gadget):
-        
         jmp = gadget[0]
+        if len(jmp.operands) == 0:
+            return
+
         op1 = jmp.operands[0]
         if op1.type == X86_OP_REG: # Register jump
             for i in reversed(gadget):
                 print("(reg) 0x%x:\t%s\t%s" % (i.address, i.mnemonic, i.op_str))
             print('---')
             jmpReg = op1.reg
-            for (loader, i) in self.__findLoaders(gadget, 0, jmpReg):
+            for (loader, i) in self.__findLoaders(gadget, 1, jmpReg):
+                print("(loader) 0x%x:\t%s\t%s" % (loader.address, loader.mnemonic, loader.op_str))
                 if self.__isIterator(loader, jmpReg):
                     return True
                 else: # Find an iterator for any of the loader's operands
                     for op in loader.operands:
-                        if op.type == X86_OP_REG and self.__hasIterator(gadget, i, op.reg):
+                        if op.type == X86_OP_REG and self.__hasIterator(gadget, i+1, op.reg):
                             #if len(self.__findIterators(gadget, i, op.reg) > 0):
                             return True
         elif op1.type == X86_OP_MEM: # Memory-indirect jump
-            if self.__hasIterator(gadget, 0, op1.mem.base):
+            if self.__hasIterator(gadget, 1, op1.mem.base):
                 return True
-            if self.__hasIterator(gadget, 0, op1.mem.index):    
+            if self.__hasIterator(gadget, 1, op1.mem.index):    
                 return True
         
         return False
