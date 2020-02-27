@@ -8,7 +8,8 @@
 
 import re
 from   capstone import *
-
+from capstone.x86 import *
+#from .x86_const import *
 
 class Gadgets(object):
     def __init__(self, binary, options, offset):
@@ -41,7 +42,124 @@ class Gadgets(object):
 
         return False
 
-    def __gadgetsFinding(self, section, gadgets, arch, mode):
+    def __findSetters(self, gadget, idx, targetReg):
+        if idx >= len(gadget):
+            return []
+        
+        setters = []
+        for i in range(idx, len(gadget)):
+            insn = gadget[i]
+            # Check if this instruction writes to the target register
+            (regsRead, regsWritten) = insn.regs_access()
+            if targetReg in regsWritten:
+                setters.append((insn, i))
+        return setters
+
+    def __isLoader(self, insn):
+        return insn.id == X86_INS_POP or (insn.id == X86_INS_MOV and insn.id != X86_INS_LEA and insn.operands[1].type == X86_OP_MEM) 
+
+    #def __isConveyor(insn):
+    #    return insn.id == X86_INS_POP or insn.id == X86_INS_MOV
+
+    # Finds all instructions that load a value to the target register
+    def __findLoaders(self, gadget, idx, targetReg):
+        if idx >= len(gadget):
+            return []
+        
+        loaders = []
+        setters = self.__findSetters(gadget, idx, targetReg) # Tuples of (insn, idx) pair
+        for (setter, i) in setters:
+            if self.__isLoader(setter):
+                loaders.append((setter, i))
+            #elif self.__isConveyor(insn):
+            #    for op in setter.operands: # Find a loader for either operand
+            #        if op.type == X86_OP_REG:
+            #            loaders += self.__findLoaders(gadget, i, op.reg)
+        return loaders
+
+    # If this instruction reads and writes to this register
+    def __isIterator(self, insn, reg):
+        if insn.id == X86_INS_POP or insn.id == X86_INS_ADD or insn.id == X86_INS_SUB: 
+            if len(insn.operands) >= 2:
+                op2 = insn.operands[1]
+                # I don't understand this condition; why not check if it reads the register (added here, but not in original)
+                if not (op2.type == x86_OP_MEM and op2.mem.base == reg) and (reg in insn.regs_read):
+                    return True
+        elif insn.id == X86_INS_LEA:
+            op1 = insn.operands[1]
+            if op1.type == X86_OP_MEM and (op1.mem.base == reg or op1.mem.index == reg):
+                return True
+        
+        return False
+
+    #def __findIterators(gadget, idx, targetReg):
+    #    if idx >= len(gadget):
+    #        return []
+    #    
+    #    iterators = []
+    #    setters = self.__findSetters(gadget, idx, targetReg)
+    #    for (setter, i) in setters:
+    #        if self.__isIterator(setter, targetReg):
+    #            iterators.append((setter, i))
+    #        elif self.__isConveyor(insn):
+    #            for op in setter.operands: # Find an iterator for either operand
+    #                if op.type == X86_OP_REG:
+    #                    iterators += self.__findIterators(gadget, i, op.reg)
+    #    return iterators
+
+    def __hasIterator(self, gadget, idx, targetReg):
+        if idx >= len(gadget):
+            return False
+        
+        setters = self.__findSetters(gadget, idx, targetReg)
+        for (setter, i) in setters:
+            if self.__isIterator(setter, targetReg):
+                return True
+            elif setter.id == X86_INS_MOV:
+                op2 = setter.operands[1]
+                lookupRegs = []
+                if op2.type == X86_OP_REG:
+                    lookupRegs.append(op1.reg)
+                elif op2.type == X86_OP_MEM:
+                    lookupRegs.append(op2.mem.base)
+                    lookupRegs.append(op2.mem.index)
+
+                for lookupReg in lookupRegs:
+                    if self.__hasIterator(gadget, i, lookupReg):
+                        return True
+            #elif self.__isConveyor(insn):
+            #    for op in setter.operands: # Find an iterator for either operand
+            #        if op.type == X86_OP_REG and self.__hasIterator(gadget, i, op.reg):
+            #            return True
+        return False
+
+    # Determines whether the gadget has an iterator and a loader (if register jump)
+    def __isDispatcher(self, gadget):
+        
+        jmp = gadget[0]
+        op1 = jmp.operands[0]
+        if op1.type == X86_OP_REG: # Register jump
+            for i in reversed(gadget):
+                print("(reg) 0x%x:\t%s\t%s" % (i.address, i.mnemonic, i.op_str))
+            print('---')
+            jmpReg = op1.reg
+            for (loader, i) in self.__findLoaders(gadget, 0, jmpReg):
+                if self.__isIterator(loader, jmpReg):
+                    return True
+                else: # Find an iterator for any of the loader's operands
+                    for op in loader.operands:
+                        if op.type == X86_OP_REG and self.__hasIterator(gadget, i, op.reg):
+                            #if len(self.__findIterators(gadget, i, op.reg) > 0):
+                            return True
+        elif op1.type == X86_OP_MEM: # Memory-indirect jump
+            if self.__hasIterator(gadget, 0, op1.mem.base):
+                return True
+            if self.__hasIterator(gadget, 0, op1.mem.index):    
+                return True
+        
+        return False
+
+    def __gadgetsFinding(self, section, gadgets, arch, mode, findDisp):
 
         PREV_BYTES = 9 # Number of bytes prior to the gadget to store.
 
@@ -50,6 +168,10 @@ class Gadgets(object):
 
         ret = []
         md = Cs(arch, mode)
+        if findDisp:
+            print('Finding dispatchers')
+            md.detail = True
+
         for gad_op, gad_size, gad_align in gadgets:
             allRefRet = [m.start() for m in re.finditer(gad_op, opcodes)]
             for ref in allRefRet:
@@ -65,6 +187,14 @@ class Gadgets(object):
                             continue
                         if self.passClean(decodes):
                             continue
+
+                        # Check if this gadget is a dispatcher gadget
+                        if findDisp:
+                            g = list(md.disasm(code, sec_vaddr+ref))
+                            g.reverse()
+                            if not self.__isDispatcher(g):
+                                continue
+                           
                         off = self.__offset
                         vaddr = off+sec_vaddr+start
                         g = {"vaddr" :  vaddr}
@@ -139,11 +269,11 @@ class Gadgets(object):
             return None
 
         if len(gadgets) > 0 :
-            return self.__gadgetsFinding(section, gadgets, arch, arch_mode + arch_endian)
+            return self.__gadgetsFinding(section, gadgets, arch, arch_mode + arch_endian, False)
         return gadgets
 
 
-    def addJOPGadgets(self, section):
+    def addJOPGadgets(self, section, findDisp):
         arch = self.__binary.getArch()
         arch_mode = self.__binary.getArchMode()
         arch_endian = self.__binary.getEndian()
@@ -246,7 +376,7 @@ class Gadgets(object):
             return None
 
         if len(gadgets) > 0 :
-            return self.__gadgetsFinding(section, gadgets, arch, arch_mode + arch_endian)
+            return self.__gadgetsFinding(section, gadgets, arch, arch_mode + arch_endian, findDisp)
         return gadgets
 
     def addSYSGadgets(self, section):
@@ -295,7 +425,7 @@ class Gadgets(object):
             return None
 
         if len(gadgets) > 0 :
-            return self.__gadgetsFinding(section, gadgets, arch, arch_mode + arch_endian)
+            return self.__gadgetsFinding(section, gadgets, arch, arch_mode + arch_endian, False)
         return []
 
 
