@@ -79,7 +79,7 @@ class Core(cmd.Cmd):
             section = self._sectionInRange(section)
             if not section: continue
             if not self.__options.norop: self.__gadgets += G.addROPGadgets(section)
-            if not self.__options.nojop: self.__gadgets += G.addJOPGadgets(section)
+            if not self.__options.nojop: self.__gadgets += G.addJOPGadgets(section, self.__options.disp)
             if not self.__options.nosys: self.__gadgets += G.addSYSGadgets(section)
 
         # Delete duplicate gadgets
