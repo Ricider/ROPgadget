@@ -55,8 +55,11 @@ class Gadgets(object):
                 setters.append((insn, i))
         return setters
 
+    def __printInsn(self, key, insn):
+        print("(%s): 0x%x:\t%s\t%s" % (key, insn.address, insn.mnemonic, insn.op_str))
+
     def __isLoader(self, insn):
-        return insn.id == X86_INS_POP or (insn.id == X86_INS_MOV and insn.id != X86_INS_LEA and insn.operands[1].type == X86_OP_MEM) 
+        return insn.id == X86_INS_POP or (insn.id == X86_INS_MOV and insn.operands[1].type == X86_OP_MEM) 
 
     #def __isConveyor(insn):
     #    return insn.id == X86_INS_POP or insn.id == X86_INS_MOV
@@ -80,16 +83,19 @@ class Gadgets(object):
     # If this instruction reads and writes to this register
     def __isIterator(self, insn, reg):
         if insn.id == X86_INS_POP:
+            self.__printInsn('iter', insn)
             return True
         elif insn.id == X86_INS_ADD or insn.id == X86_INS_SUB: 
             if len(insn.operands) >= 2:
                 op2 = insn.operands[1]
                 # I don't understand this condition; why not check if it reads the register (added here, but not in original)
                 if not (op2.type == x86_OP_MEM and op2.mem.base == reg) and (reg in insn.regs_read):
+                    self.__printInsn('iter', insn)
                     return True
         elif insn.id == X86_INS_LEA:
             op1 = insn.operands[1]
             if op1.type == X86_OP_MEM and (op1.mem.base == reg or op1.mem.index == reg):
+                self.__printInsn('iter', insn)
                 return True
         
         return False
@@ -138,23 +144,24 @@ class Gadgets(object):
     # Determines whether the gadget has an iterator and a loader (if register jump)
     def __isDispatcher(self, gadget):
         jmp = gadget[0]
-        if len(jmp.operands) == 0:
-            return
+        if len(jmp.operands) == 0: # direct jump
+            return False
 
         op1 = jmp.operands[0]
         if op1.type == X86_OP_REG: # Register jump
-            for i in reversed(gadget):
-                print("(reg) 0x%x:\t%s\t%s" % (i.address, i.mnemonic, i.op_str))
-            print('---')
+            #for i in reversed(gadget):
+            #    print("(reg) 0x%x:\t%s\t%s" % (i.address, i.mnemonic, i.op_str))
+            #print('---')
             jmpReg = op1.reg
             for (loader, i) in self.__findLoaders(gadget, 1, jmpReg):
-                print("(loader) 0x%x:\t%s\t%s" % (loader.address, loader.mnemonic, loader.op_str))
+                #print("(loader) 0x%x:\t%s\t%s" % (loader.address, loader.mnemonic, loader.op_str))
                 if self.__isIterator(loader, jmpReg):
                     return True
                 else: # Find an iterator for any of the loader's operands
                     for op in loader.operands:
                         if op.type == X86_OP_REG and self.__hasIterator(gadget, i+1, op.reg):
                             #if len(self.__findIterators(gadget, i, op.reg) > 0):
+                            self.__printInsn('loader', insn)
                             return True
         elif op1.type == X86_OP_MEM: # Memory-indirect jump
             if self.__hasIterator(gadget, 1, op1.mem.base):
