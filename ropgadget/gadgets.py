@@ -89,7 +89,7 @@ class Gadgets(object):
             if len(insn.operands) >= 2:
                 op2 = insn.operands[1]
                 # I don't understand this condition; why not check if it reads the register (added here, but not in original)
-                if not (op2.type == x86_OP_MEM and op2.mem.base == reg) and (reg in insn.regs_read):
+                if not (op2.type == X86_OP_MEM and op2.mem.base == reg) and (reg in insn.regs_read):
                     self.__printInsn('iter', insn)
                     return True
         elif insn.id == X86_INS_LEA:
