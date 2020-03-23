@@ -47,10 +47,18 @@ class Gadgets(object):
             return []
         
         setters = []
+        #print('findSetters idx=%i, len(gadget)=%i' % (idx, len(gadget)))
         for i in range(idx, len(gadget)):
             insn = gadget[i]
+            if len(insn.operands) == 0: # Need this to prevent double-free errors...
+                continue
+            #self.__printInsn('in setter', insn)
+            #print('numOps=%i' % len(insn.operands))
+            
             # Check if this instruction writes to the target register
-            (regsRead, regsWritten) = insn.regs_access()
+            (regsRead, regsWritten) = insn.regs_access() # Causes double free error when ud0 instruction encountered
+            #for r in regsWritten:
+            #    print("reg read: %s" % insn.reg_name(r))
             if targetReg in regsWritten:
                 setters.append((insn, i))
         return setters
@@ -82,15 +90,18 @@ class Gadgets(object):
 
     # If this instruction reads and writes to this register
     def __isIterator(self, insn, reg):
+        if len(insn.operands) == 0:
+            return False
+
         if insn.id == X86_INS_POP:
-            self.__printInsn('iter', insn)
+            #self.__printInsn('iter', insn)
             return True
         elif insn.id == X86_INS_ADD or insn.id == X86_INS_SUB: 
             if len(insn.operands) >= 2:
                 op2 = insn.operands[1]
                 # I don't understand this condition; why not check if it reads the register (added here, but not in original)
                 if not (op2.type == X86_OP_MEM and op2.mem.base == reg) and (reg in insn.regs_read):
-                    self.__printInsn('iter', insn)
+                    #self.__printInsn('iter', insn)
                     return True
         elif insn.id == X86_INS_LEA:
             op1 = insn.operands[1]
@@ -118,8 +129,9 @@ class Gadgets(object):
     def __hasIterator(self, gadget, idx, targetReg):
         if idx >= len(gadget):
             return False
-        
+       
         setters = self.__findSetters(gadget, idx, targetReg)
+        #print('setters', setters)
         for (setter, i) in setters:
             if self.__isIterator(setter, targetReg):
                 return True
@@ -127,7 +139,7 @@ class Gadgets(object):
                 op2 = setter.operands[1]
                 lookupRegs = []
                 if op2.type == X86_OP_REG:
-                    lookupRegs.append(op1.reg)
+                    lookupRegs.append(op2.reg)
                 elif op2.type == X86_OP_MEM:
                     lookupRegs.append(op2.mem.base)
                     lookupRegs.append(op2.mem.index)
@@ -144,14 +156,13 @@ class Gadgets(object):
     # Determines whether the gadget has an iterator and a loader (if register jump)
     def __isDispatcher(self, gadget):
         jmp = gadget[0]
-        if len(jmp.operands) == 0: # direct jump
+        if len(jmp.operands) == 0 or len(gadget) <= 1: # direct jump
+            #self.__printInsn('invalid', jmp)
             return False
-
+        
         op1 = jmp.operands[0]
         if op1.type == X86_OP_REG: # Register jump
-            #for i in reversed(gadget):
-            #    print("(reg) 0x%x:\t%s\t%s" % (i.address, i.mnemonic, i.op_str))
-            #print('---')
+            
             jmpReg = op1.reg
             for (loader, i) in self.__findLoaders(gadget, 1, jmpReg):
                 #print("(loader) 0x%x:\t%s\t%s" % (loader.address, loader.mnemonic, loader.op_str))
@@ -161,9 +172,13 @@ class Gadgets(object):
                     for op in loader.operands:
                         if op.type == X86_OP_REG and self.__hasIterator(gadget, i+1, op.reg):
                             #if len(self.__findIterators(gadget, i, op.reg) > 0):
-                            self.__printInsn('loader', insn)
+                            #self.__printInsn('loader', loader)
                             return True
         elif op1.type == X86_OP_MEM: # Memory-indirect jump
+            #print('memory indirect gadget')
+            #for i in reversed(gadget):
+            #    self.__printInsn('gadget', i)
+            #print('---')
             if self.__hasIterator(gadget, 1, op1.mem.base):
                 return True
             if self.__hasIterator(gadget, 1, op1.mem.index):    
@@ -202,7 +217,8 @@ class Gadgets(object):
 
                         # Check if this gadget is a dispatcher gadget
                         if findDisp:
-                            g = list(md.disasm(code, sec_vaddr+ref))
+                            g = md.disasm(code, sec_vaddr+ref)
+                            g = list(g)
                             g.reverse()
                             if not self.__isDispatcher(g):
                                 continue

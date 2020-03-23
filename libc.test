@@ -1,0 +1,111 @@
+Finding dispatchers
+Finding dispatchers
+(iter): 0x195b57:	pop	rax
+(iter): 0x188e7f:	pop	rcx
+(iter): 0x1958f7:	pop	rsi
+(iter): 0x1958f8:	pop	rsi
+(iter): 0x197cf3:	pop	rsi
+(iter): 0x197cf3:	pop	rsi
+(iter): 0x197cf5:	pop	rsi
+(iter): 0x198e83:	pop	rbp
+(iter): 0x19ab3b:	pop	rax
+(iter): 0x19b6e3:	pop	rcx
+(iter): 0x19b6e5:	pop	rcx
+(iter): 0x19b6e6:	pop	rcx
+(iter): 0x19e59b:	pop	rsp
+(iter): 0x19e59d:	pop	rsp
+(iter): 0x1957b7:	pop	rsi
+(iter): 0x195b5f:	pop	rax
+(iter): 0x195b97:	pop	rax
+(iter): 0x195b98:	pop	rax
+(iter): 0x1a6b2b:	pop	rax
+(iter): 0x1a6b2d:	pop	rax
+(iter): 0x1a6b2e:	pop	rax
+(iter): 0x1a6b2f:	pop	rax
+(iter): 0x1a6b30:	pop	rax
+(iter): 0x1a6b31:	pop	rax
+(iter): 0x1a6e2b:	pop	rax
+(iter): 0x1a6e2d:	pop	rax
+(iter): 0x10741b:	pop	rax
+(iter): 0x10741d:	pop	rax
+(iter): 0x10741f:	pop	rax
+(iter): 0x107420:	pop	rax
+(iter): 0x107421:	pop	rax
+(iter): 0x107422:	pop	rax
+(iter): 0x135a35:	pop	rax
+(iter): 0x186893:	pop	rsp
+(iter): 0x1868bb:	pop	rsp
+(iter): 0x1868d3:	pop	rsp
+(iter): 0x1958d3:	pop	rbx
+(iter): 0x1958d3:	pop	rbx
+(iter): 0x1958d8:	pop	rbx
+(iter): 0x197ccb:	pop	rax
+(iter): 0x197ccd:	pop	rax
+(iter): 0x197ccf:	pop	rax
+(iter): 0x197cd0:	pop	rax
+(iter): 0x19821b:	pop	rsp
+(iter): 0x198553:	pop	rsp
+(iter): 0x198554:	pop	rsp
+(iter): 0x198556:	pop	rsp
+(iter): 0x199f33:	pop	rsp
+(iter): 0x199f35:	pop	rsp
+(iter): 0x19b403:	pop	rbp
+(iter): 0x19b405:	pop	rbp
+(iter): 0x19b408:	pop	rbp
+(iter): 0x1a1683:	pop	rbx
+(iter): 0x1a1683:	pop	rbx
+(iter): 0x1a1685:	pop	rbx
+Gadgets information
+============================================================
+0x000000000019b3ff : add ah, al ; pop rbp ; cli ; call rsp
+0x00000000001a6b23 : add ah, ch ; scasd eax, dword ptr [rdi] ; add byte ptr [rax], al ; pop rax ; cli ; call qword ptr [rax]
+0x0000000000197cc7 : add ah, dl ; pop rax ; out dx, al ; call rsp
+0x0000000000107413 : add al, 0x25 ; rol byte ptr [rdx], 1 ; add byte ptr [rax], al ; pop rax ; pop rdi ; call rax
+0x00000000001a6b22 : add byte ptr [rax], al ; in al, dx ; scasd eax, dword ptr [rdi] ; add byte ptr [rax], al ; pop rax ; cli ; call qword ptr [rax]
+0x00000000001a6b26 : add byte ptr [rax], al ; pop rax ; cli ; call qword ptr [rax]
+0x00000000001a6e26 : add byte ptr [rax], al ; pop rax ; out 0xee, al ; call qword ptr [rax]
+0x0000000000107417 : add byte ptr [rax], al ; pop rax ; pop rdi ; call rax
+0x00000000001a167a : add byte ptr [rax], al ; pop rbx ; add byte ptr [rax], al ; ror al, 1 ; in al, dx ; call rsp
+0x0000000000197cee : add byte ptr [rax], al ; pop rsi ; out dx, al ; jmp rsp
+0x000000000019e592 : add byte ptr [rax], al ; pop rsp ; sub al, byte ptr [rax] ; add al, bh ; jl 0x19e58d ; jmp rsp
+0x000000000019854e : add dword ptr [rax], eax ; push rsp ; pop rsp ; int1 ; call rsp
+0x0000000000107414 : and eax, 0x2d0 ; pop rax ; pop rdi ; call rax
+0x000000000019b6da : cli ; dec esp ; pop rcx ; add al, byte ptr [rax] ; je 0x19b6b4 ; cli ; jmp rsp
+0x000000000019b6db : dec esp ; pop rcx ; add al, byte ptr [rax] ; je 0x19b6b3 ; cli ; jmp rsp
+0x0000000000199f2a : idiv edi ; pop rsp ; mov bl, 1 ; add byte ptr [rbp + rdx*2 - 9], ah ; call rsp
+0x00000000001a6b24 : in al, dx ; scasd eax, dword ptr [rdi] ; add byte ptr [rax], al ; pop rax ; cli ; call qword ptr [rax]
+0x0000000000197cc5 : loopne 0x197ccd ; add ah, dl ; pop rax ; out dx, al ; call rsp
+0x0000000000107412 : mov dword ptr [0x2d0], eax ; pop rax ; pop rdi ; call rax
+0x00000000001958cc : mov esi, 0x64fffc5b ; pop rbx ; cld ; call rsp
+0x000000000019b3fc : mov esp, 0xc4000247 ; pop rbp ; cli ; call rsp
+0x0000000000197cc4 : mov esp, 0xd40000e0 ; pop rax ; out dx, al ; call rsp
+0x0000000000195b94 : nop ; pop rax ; cld ; call qword ptr [rax]
+0x0000000000135a34 : pop rax ; call rax
+0x0000000000195b59 : pop rax ; cld ; call qword ptr [rax + 0x10fffc57]
+0x0000000000195b95 : pop rax ; cld ; call qword ptr [rax]
+0x0000000000195b55 : pop rax ; cld ; jmp qword ptr [rax]
+0x00000000001a6b28 : pop rax ; cli ; call qword ptr [rax]
+0x00000000001a6e28 : pop rax ; out 0xee, al ; call qword ptr [rax]
+0x0000000000197cc9 : pop rax ; out dx, al ; call rsp
+0x0000000000107419 : pop rax ; pop rdi ; call rax
+0x000000000019ab39 : pop rax ; stc ; jmp rsp
+0x0000000000198e7d : pop rbp ; add dword ptr [rax], eax ; adc al, 0x91 ; hlt ; jmp rsp
+0x000000000019b401 : pop rbp ; cli ; call rsp
+0x00000000001a167d : pop rbx ; add byte ptr [rax], al ; ror al, 1 ; in al, dx ; call rsp
+0x00000000001958d1 : pop rbx ; cld ; call rsp
+0x000000000019b6dd : pop rcx ; add al, byte ptr [rax] ; je 0x19b6b1 ; cli ; jmp rsp
+0x0000000000188e7c : pop rcx ; sal bl, 1 ; jmp rcx
+0x00000000001957b5 : pop rsi ; cld ; call qword ptr [rsi]
+0x00000000001958f5 : pop rsi ; cld ; jmp rsp
+0x0000000000197cf1 : pop rsi ; out dx, al ; jmp rsp
+0x0000000000198214 : pop rsp ; add al, 1 ; add ah, ah ; xchg eax, ebx ; out dx, eax ; call rsp
+0x0000000000186891 : pop rsp ; in eax, dx ; call rsp
+0x0000000000198551 : pop rsp ; int1 ; call rsp
+0x0000000000199f2c : pop rsp ; mov bl, 1 ; add byte ptr [rbp + rdx*2 - 9], ah ; call rsp
+0x000000000019e594 : pop rsp ; sub al, byte ptr [rax] ; add al, bh ; jl 0x19e58b ; jmp rsp
+0x00000000001958f4 : push rsp ; pop rsi ; cld ; jmp rsp
+0x0000000000198550 : push rsp ; pop rsp ; int1 ; call rsp
+0x0000000000107415 : rol byte ptr [rdx], 1 ; add byte ptr [rax], al ; pop rax ; pop rdi ; call rax
+0x00000000001a6b25 : scasd eax, dword ptr [rdi] ; add byte ptr [rax], al ; pop rax ; cli ; call qword ptr [rax]
+
+Unique gadgets found: 50
