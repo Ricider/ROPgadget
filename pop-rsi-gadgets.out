@@ -1,0 +1,193 @@
+Gadgets information
+============================================================
+0x0000000000190460 : adc byte ptr [rsi + 0xf], ah ; out dx, eax ; pop rsi ; adc byte ptr [rsi + 0xf], ah ; jmp 0x19043d
+0x0000000000190460 : adc byte ptr [rsi + 0xf], ah ; out dx, eax ; pop rsi ; adc byte ptr [rsi + 0xf], ah ; jmp 0x19043e
+0x00000000001904de : adc byte ptr [rsi + 0xf], ah ; out dx, eax ; pop rsi ; adc byte ptr [rsi + 0xf], ah ; jmp 0x1904bb
+0x00000000001904de : adc byte ptr [rsi + 0xf], ah ; out dx, eax ; pop rsi ; adc byte ptr [rsi + 0xf], ah ; jmp 0x1904bc
+0x0000000000190970 : adc byte ptr [rsi + 0xf], ah ; out dx, eax ; pop rsi ; adc byte ptr [rsi + 0xf], ah ; jmp 0x19094d
+0x0000000000190970 : adc byte ptr [rsi + 0xf], ah ; out dx, eax ; pop rsi ; adc byte ptr [rsi + 0xf], ah ; jmp 0x19094e
+0x00000000001909ee : adc byte ptr [rsi + 0xf], ah ; out dx, eax ; pop rsi ; adc byte ptr [rsi + 0xf], ah ; jmp 0x1909cb
+0x00000000001909ee : adc byte ptr [rsi + 0xf], ah ; out dx, eax ; pop rsi ; adc byte ptr [rsi + 0xf], ah ; jmp 0x1909cc
+0x0000000000191a90 : adc byte ptr [rsi + 0xf], ah ; out dx, eax ; pop rsi ; adc byte ptr [rsi + 0xf], ah ; jmp 0x191a6d
+0x0000000000191a90 : adc byte ptr [rsi + 0xf], ah ; out dx, eax ; pop rsi ; adc byte ptr [rsi + 0xf], ah ; jmp 0x191a6e
+0x0000000000191b0e : adc byte ptr [rsi + 0xf], ah ; out dx, eax ; pop rsi ; adc byte ptr [rsi + 0xf], ah ; jmp 0x191aeb
+0x0000000000191b0e : adc byte ptr [rsi + 0xf], ah ; out dx, eax ; pop rsi ; adc byte ptr [rsi + 0xf], ah ; jmp 0x191aec
+0x0000000000191fa0 : adc byte ptr [rsi + 0xf], ah ; out dx, eax ; pop rsi ; adc byte ptr [rsi + 0xf], ah ; jmp 0x191f7d
+0x0000000000191fa0 : adc byte ptr [rsi + 0xf], ah ; out dx, eax ; pop rsi ; adc byte ptr [rsi + 0xf], ah ; jmp 0x191f7e
+0x000000000019201e : adc byte ptr [rsi + 0xf], ah ; out dx, eax ; pop rsi ; adc byte ptr [rsi + 0xf], ah ; jmp 0x191ffb
+0x000000000019201e : adc byte ptr [rsi + 0xf], ah ; out dx, eax ; pop rsi ; adc byte ptr [rsi + 0xf], ah ; jmp 0x191ffc
+0x00000000001c8cb7 : add byte ptr [rax + 0x64000004], bl ; pop rsi ; jmp 0x1c8cc6
+0x0000000000129978 : add byte ptr [rax - 0x73], cl ; pop rsi ; add dword ptr [rax + 0x39], ecx ; retf
+0x00000000001c8cb5 : add byte ptr [rax], al ; add byte ptr [rax + 0x64000004], bl ; pop rsi ; jmp 0x1c8cc8
+0x0000000000129976 : add byte ptr [rax], al ; add byte ptr [rax - 0x73], cl ; pop rsi ; add dword ptr [rax + 0x39], ecx ; retf
+0x00000000000a8014 : add byte ptr [rax], al ; add cl, ch ; pop rsi ; retf -1
+0x00000000001c95de : add byte ptr [rax], al ; cwde ; pop rsi ; add byte ptr [rax], al ; cmp al, 0x81 ; jmp 0x1c95ef
+0x00000000001c8cba : add byte ptr [rax], al ; pop rsi ; jmp 0x1c8cc3
+0x00000000001c95a2 : add byte ptr [rax], al ; pop rsp ; pop rsi ; add byte ptr [rax], al ; test al, 0x80 ; jmp 0x1c95b3
+0x00000000000660cf : add byte ptr [rbp - 0x77], al ; pop rsi ; add al, 0x41 ; mov byte ptr [rsi + 0xc], al ; jmp 0x65970
+0x00000000000a8016 : add cl, ch ; pop rsi ; retf -1
+0x00000000001616ec : add eax, ebp ; pop rsi ; stc ; jmp 0x1616f5
+0x00000000001acbd4 : clc ; pop rsi ; jmp 0x11e7d539
+0x00000000000ea9e8 : cli ; pop rsi ; seta dl ; or al, dl ; je 0xea9b9 ; jmp 0xea409
+0x0000000000199656 : cmp byte ptr [rbx + 0x41], bl ; pop rsi ; ret
+0x000000000012d53b : cmp byte ptr [rcx - 0x77], cl ; pop rsi ; or byte ptr [rax - 0x77], cl ; ret 0x2b49
+0x000000000012d53a : cmp byte ptr [rcx - 0x77], r9b ; pop rsi ; or byte ptr [rax - 0x77], cl ; ret 0x2b49
+0x00000000001c95e0 : cwde ; pop rsi ; add byte ptr [rax], al ; cmp al, 0x81 ; jmp 0x1c95ed
+0x000000000015878c : mov cl, 0x35 ; pop rsi ; jns 0x1587c2 ; add byte ptr [rbp + 0xb], dh ; jmp 0x1587c1
+0x0000000000190463 : out dx, eax ; pop rsi ; adc byte ptr [rsi + 0xf], ah ; jmp 0x19043a
+0x0000000000190463 : out dx, eax ; pop rsi ; adc byte ptr [rsi + 0xf], ah ; jmp 0x19043b
+0x00000000001904e1 : out dx, eax ; pop rsi ; adc byte ptr [rsi + 0xf], ah ; jmp 0x1904b8
+0x00000000001904e1 : out dx, eax ; pop rsi ; adc byte ptr [rsi + 0xf], ah ; jmp 0x1904b9
+0x0000000000190973 : out dx, eax ; pop rsi ; adc byte ptr [rsi + 0xf], ah ; jmp 0x19094a
+0x0000000000190973 : out dx, eax ; pop rsi ; adc byte ptr [rsi + 0xf], ah ; jmp 0x19094b
+0x00000000001909f1 : out dx, eax ; pop rsi ; adc byte ptr [rsi + 0xf], ah ; jmp 0x1909c8
+0x00000000001909f1 : out dx, eax ; pop rsi ; adc byte ptr [rsi + 0xf], ah ; jmp 0x1909c9
+0x0000000000191a93 : out dx, eax ; pop rsi ; adc byte ptr [rsi + 0xf], ah ; jmp 0x191a6a
+0x0000000000191a93 : out dx, eax ; pop rsi ; adc byte ptr [rsi + 0xf], ah ; jmp 0x191a6b
+0x0000000000191b11 : out dx, eax ; pop rsi ; adc byte ptr [rsi + 0xf], ah ; jmp 0x191ae8
+0x0000000000191b11 : out dx, eax ; pop rsi ; adc byte ptr [rsi + 0xf], ah ; jmp 0x191ae9
+0x0000000000191fa3 : out dx, eax ; pop rsi ; adc byte ptr [rsi + 0xf], ah ; jmp 0x191f7a
+0x0000000000191fa3 : out dx, eax ; pop rsi ; adc byte ptr [rsi + 0xf], ah ; jmp 0x191f7b
+0x0000000000192021 : out dx, eax ; pop rsi ; adc byte ptr [rsi + 0xf], ah ; jmp 0x191ff8
+0x0000000000192021 : out dx, eax ; pop rsi ; adc byte ptr [rsi + 0xf], ah ; jmp 0x191ff9
+0x000000000019045f : pop rdi ; adc byte ptr [rsi + 0xf], ah ; out dx, eax ; pop rsi ; adc byte ptr [rsi + 0xf], ah ; jmp 0x19043e
+0x00000000001904dd : pop rdi ; adc byte ptr [rsi + 0xf], ah ; out dx, eax ; pop rsi ; adc byte ptr [rsi + 0xf], ah ; jmp 0x1904bc
+0x000000000019096f : pop rdi ; adc byte ptr [rsi + 0xf], ah ; out dx, eax ; pop rsi ; adc byte ptr [rsi + 0xf], ah ; jmp 0x19094e
+0x00000000001909ed : pop rdi ; adc byte ptr [rsi + 0xf], ah ; out dx, eax ; pop rsi ; adc byte ptr [rsi + 0xf], ah ; jmp 0x1909cc
+0x0000000000191a8f : pop rdi ; adc byte ptr [rsi + 0xf], ah ; out dx, eax ; pop rsi ; adc byte ptr [rsi + 0xf], ah ; jmp 0x191a6e
+0x0000000000191b0d : pop rdi ; adc byte ptr [rsi + 0xf], ah ; out dx, eax ; pop rsi ; adc byte ptr [rsi + 0xf], ah ; jmp 0x191aec
+0x0000000000191f9f : pop rdi ; adc byte ptr [rsi + 0xf], ah ; out dx, eax ; pop rsi ; adc byte ptr [rsi + 0xf], ah ; jmp 0x191f7e
+0x000000000019201d : pop rdi ; adc byte ptr [rsi + 0xf], ah ; out dx, eax ; pop rsi ; adc byte ptr [rsi + 0xf], ah ; jmp 0x191ffc
+0x00000000001306d9 : pop rdx ; pop rsi ; ret
+0x000000000009325b : pop rsi ; adc al, byte ptr [rax] ; push rax ; jmp 0x9313e
+0x0000000000190464 : pop rsi ; adc byte ptr [rsi + 0xf], ah ; jmp 0x190439
+0x0000000000190464 : pop rsi ; adc byte ptr [rsi + 0xf], ah ; jmp 0x19043a
+0x00000000001904e2 : pop rsi ; adc byte ptr [rsi + 0xf], ah ; jmp 0x1904b7
+0x00000000001904e2 : pop rsi ; adc byte ptr [rsi + 0xf], ah ; jmp 0x1904b8
+0x0000000000190974 : pop rsi ; adc byte ptr [rsi + 0xf], ah ; jmp 0x190949
+0x0000000000190974 : pop rsi ; adc byte ptr [rsi + 0xf], ah ; jmp 0x19094a
+0x00000000001909f2 : pop rsi ; adc byte ptr [rsi + 0xf], ah ; jmp 0x1909c7
+0x00000000001909f2 : pop rsi ; adc byte ptr [rsi + 0xf], ah ; jmp 0x1909c8
+0x0000000000191a94 : pop rsi ; adc byte ptr [rsi + 0xf], ah ; jmp 0x191a69
+0x0000000000191a94 : pop rsi ; adc byte ptr [rsi + 0xf], ah ; jmp 0x191a6a
+0x0000000000191b12 : pop rsi ; adc byte ptr [rsi + 0xf], ah ; jmp 0x191ae7
+0x0000000000191b12 : pop rsi ; adc byte ptr [rsi + 0xf], ah ; jmp 0x191ae8
+0x0000000000191fa4 : pop rsi ; adc byte ptr [rsi + 0xf], ah ; jmp 0x191f79
+0x0000000000191fa4 : pop rsi ; adc byte ptr [rsi + 0xf], ah ; jmp 0x191f7a
+0x0000000000192022 : pop rsi ; adc byte ptr [rsi + 0xf], ah ; jmp 0x191ff7
+0x0000000000192022 : pop rsi ; adc byte ptr [rsi + 0xf], ah ; jmp 0x191ff8
+0x0000000000188c7e : pop rsi ; adc eax, dword ptr [rax] ; add byte ptr [rcx - 0x7d], cl ; jmp 0x188c9c
+0x000000000018c10e : pop rsi ; add al, 0 ; add byte ptr [rax - 0x7d], cl ; ret 0xe910
+0x0000000000189b7e : pop rsi ; add al, 0 ; add byte ptr [rcx - 0x7d], cl ; jmp 0x189b9c
+0x00000000000660d2 : pop rsi ; add al, 0x41 ; mov byte ptr [rsi + 0xc], al ; jmp 0x6596d
+0x00000000001c95e1 : pop rsi ; add byte ptr [rax], al ; cmp al, 0x81 ; jmp 0x1c95ec
+0x00000000001c95a5 : pop rsi ; add byte ptr [rax], al ; test al, 0x80 ; jmp 0x1c95b0
+0x000000000012997b : pop rsi ; add dword ptr [rax + 0x39], ecx ; retf
+0x0000000000192739 : pop rsi ; add dword ptr [rax], eax ; add byte ptr [rcx - 0x7f], cl ; jmp 0x19294a
+0x000000000013961c : pop rsi ; add dword ptr [rax], esp ; jne 0x1395f3 ; jmp 0x1395c0
+0x000000000013961b : pop rsi ; add dword ptr [rax], esp ; jne 0x1395f4 ; jmp 0x1395c1
+0x00000000000ecfed : pop rsi ; add dword ptr [rsi + 1], edi ; jmp 0xed01a
+0x00000000000b092e : pop rsi ; add eax, 0x83490000 ; jmp 0xb094c
+0x0000000000123e9c : pop rsi ; add ecx, dword ptr [rax - 0x42] ; ret
+0x000000000002c6b6 : pop rsi ; cmp byte ptr [rcx - 0x77], cl ; push rsi ; sub byte ptr [rax - 0x3f], cl ; retf
+0x0000000000054f84 : pop rsi ; cmp dword ptr [rax], eax ; mov rcx, qword ptr fs:[rax] ; jmp 0x55987
+0x0000000000054f94 : pop rsi ; cmp dword ptr [rax], eax ; xor edx, edx ; mov rcx, qword ptr fs:[rax] ; jmp 0x55989
+0x000000000005635d : pop rsi ; idiv bh ; push qword ptr [rcx] ; leave ; xor r10d, r10d ; jmp 0x559c8
+0x000000000010b3e5 : pop rsi ; int1 ; dec dword ptr [rbx + rcx*4 + 0x54] ; and al, 8 ; jmp 0x10ad94
+0x00000000000ed503 : pop rsi ; je 0xecbc7 ; jmp 0xec2f7
+0x00000000001acbd6 : pop rsi ; jmp 0x11e7d537
+0x00000000001acbd5 : pop rsi ; jmp 0x11e7d538
+0x000000000016e968 : pop rsi ; jmp 0x16e9b4
+0x000000000016e9b4 : pop rsi ; jmp 0x16ea00
+0x000000000016e9f3 : pop rsi ; jmp 0x16ea3f
+0x000000000016ea33 : pop rsi ; jmp 0x16ea7f
+0x000000000016ea6e : pop rsi ; jmp 0x16eaba
+0x000000000016eaaa : pop rsi ; jmp 0x16eaf6
+0x000000000016ead6 : pop rsi ; jmp 0x16eb22
+0x000000000016eb02 : pop rsi ; jmp 0x16eb4e
+0x0000000000171338 : pop rsi ; jmp 0x171384
+0x0000000000171384 : pop rsi ; jmp 0x1713d0
+0x00000000001713c3 : pop rsi ; jmp 0x17140f
+0x0000000000171403 : pop rsi ; jmp 0x17144f
+0x000000000017143e : pop rsi ; jmp 0x17148a
+0x000000000017147a : pop rsi ; jmp 0x1714c6
+0x00000000001714a6 : pop rsi ; jmp 0x1714f2
+0x00000000001714d2 : pop rsi ; jmp 0x17151e
+0x00000000001c8cbd : pop rsi ; jmp 0x1c8cc0
+0x00000000001c8cbc : pop rsi ; jmp 0x1c8cc1
+0x000000000009a2e2 : pop rsi ; jmp 0x211f1
+0x0000000000021966 : pop rsi ; jmp 0x219a6
+0x00000000000928e8 : pop rsi ; jmp 0x920a1
+0x000000000009772e : pop rsi ; jmp 0x97071
+0x00000000001be991 : pop rsi ; jmp 0xb64a97
+0x000000000016ed68 : pop rsi ; jmp 0xfffffffff16578b7
+0x000000000016edb4 : pop rsi ; jmp 0xfffffffff1657903
+0x000000000016edf3 : pop rsi ; jmp 0xfffffffff1657942
+0x000000000016ee2f : pop rsi ; jmp 0xfffffffff165797e
+0x000000000016ee6e : pop rsi ; jmp 0xfffffffff16579bd
+0x000000000016eeaa : pop rsi ; jmp 0xfffffffff16579f9
+0x000000000016eed6 : pop rsi ; jmp 0xfffffffff1657a25
+0x000000000016ef02 : pop rsi ; jmp 0xfffffffff1657a51
+0x0000000000171738 : pop rsi ; jmp 0xfffffffff165a287
+0x0000000000171784 : pop rsi ; jmp 0xfffffffff165a2d3
+0x00000000001717c3 : pop rsi ; jmp 0xfffffffff165a312
+0x00000000001717ff : pop rsi ; jmp 0xfffffffff165a34e
+0x000000000017183e : pop rsi ; jmp 0xfffffffff165a38d
+0x000000000017187a : pop rsi ; jmp 0xfffffffff165a3c9
+0x00000000001718a6 : pop rsi ; jmp 0xfffffffff165a3f5
+0x00000000001718d2 : pop rsi ; jmp 0xfffffffff165a421
+0x0000000000097776 : pop rsi ; jmp rax
+0x0000000000099e21 : pop rsi ; jmp rcx
+0x00000000000d9f39 : pop rsi ; jne 0xd9f69 ; mov r11d, 1 ; jmp 0xd9f02
+0x000000000015878e : pop rsi ; jns 0x1587c0 ; add byte ptr [rbp + 0xb], dh ; jmp 0x1587bf
+0x00000000000eda60 : pop rsi ; mov eax, dword ptr [rbp - 0x70] ; pop rdi ; jmp 0xed818
+0x00000000000268b1 : pop rsi ; mov r11d, eax ; pop rdi ; jmp 0x267ba
+0x000000000011de92 : pop rsi ; mov rdi, qword ptr [r13] ; call r12
+0x0000000000099397 : pop rsi ; mov rdi, rsi ; jmp 0x97074
+0x00000000001464ae : pop rsi ; or al, byte ptr [rax] ; add byte ptr [rax - 0x77], cl ; fisttp word ptr [rax - 0x77] ; jmp 0x1464aa
+0x000000000012d53e : pop rsi ; or byte ptr [rax - 0x77], cl ; ret 0x2b49
+0x00000000000bd507 : pop rsi ; or eax, 0x440f4800 ; ret 0x90c3
+0x000000000016b96e : pop rsi ; or eax, 0x83490000 ; jmp 0x16b98c
+0x00000000001b0fec : pop rsi ; or esi, esp ; inc dword ptr [rbx + rcx - 0xc] ; jmp qword ptr [rax]
+0x000000000011563e : pop rsi ; pop r15 ; jmp 0x115233
+0x000000000011691e : pop rsi ; pop r15 ; jmp 0x116743
+0x0000000000116a2e : pop rsi ; pop r15 ; jmp 0x1167f3
+0x000000000019a28d : pop rsi ; pop r15 ; jmp 0x19a2a3
+0x0000000000041f14 : pop rsi ; pop r15 ; jmp 0x21163
+0x00000000000a2890 : pop rsi ; pop r15 ; jmp 0x21203
+0x000000000012c204 : pop rsi ; pop r15 ; jmp 0x21293
+0x0000000000023f32 : pop rsi ; pop r15 ; jmp 0x212cb
+0x0000000000096080 : pop rsi ; pop r15 ; jmp 0x952e3
+0x0000000000098a96 : pop rsi ; pop r15 ; jmp 0x97073
+0x000000000009e65b : pop rsi ; pop r15 ; jmp 0x9e073
+0x00000000000a069b : pop rsi ; pop r15 ; jmp 0x9fff3
+0x00000000000a0cfe : pop rsi ; pop r15 ; jmp 0xa0893
+0x00000000000c8994 : pop rsi ; pop r15 ; jmp 0xbc123
+0x00000000000989e8 : pop rsi ; pop r15 ; jmp rax
+0x000000000014f7ad : pop rsi ; pop r15 ; mov rdi, r8 ; jmp 0x212ce
+0x000000000002cfb2 : pop rsi ; pop r15 ; mov rdi, rax ; jmp 0x21166
+0x00000000000221a1 : pop rsi ; pop r15 ; pop rbp ; ret
+0x000000000002155d : pop rsi ; pop r15 ; ret
+0x000000000007dd2e : pop rsi ; pop rbp ; ret
+0x00000000000e0b6e : pop rsi ; pop rdi ; jmp 0xe0a62
+0x0000000000045576 : pop rsi ; push rsp ; cmp al, byte ptr [rax] ; mov rsi, rbx ; jmp 0x45593
+0x0000000000023e6a : pop rsi ; ret
+0x00000000000024bf : pop rsi ; retf -0x75c1
+0x00000000000a8018 : pop rsi ; retf -1
+0x000000000011c1c7 : pop rsi ; retf 0x37eb
+0x00000000001505e9 : pop rsi ; sbb byte ptr [rcx + 0x31], cl ; retf 0x314d
+0x00000000000ea9e9 : pop rsi ; seta dl ; or al, dl ; je 0xea9b8 ; jmp 0xea408
+0x00000000001616ee : pop rsi ; stc ; jmp 0x1616f3
+0x0000000000128a13 : pop rsi ; sub al, 0 ; jne 0x128a27 ; jmp 0x128a41
+0x0000000000128a72 : pop rsi ; sub al, 0 ; jne 0x128a87 ; jmp 0x128aa1
+0x00000000000a0719 : pop rsi ; sub rdi, r12 ; jmp 0xa072e
+0x00000000000489fe : pop rsi ; xchg ebp, edi ; dec dword ptr [rbx + rcx*4 + 0x54] ; and al, 0x20 ; jmp 0x477ec
+0x000000000011e358 : pop rsi ; xor eax, eax ; jmp 0x64dc3
+0x000000000011e2fb : pop rsi ; xor eax, eax ; jmp 0x82993
+0x00000000001488a1 : pop rsi ; xor eax, eax ; mov rsp, r13 ; jmp 0x14879f
+0x00000000001c95a4 : pop rsp ; pop rsi ; add byte ptr [rax], al ; test al, 0x80 ; jmp 0x1c95b1
+0x00000000001acbce : push 0x4c ; xor eax, 0xf825ab99 ; pop rsi ; jmp 0x11e7d53f
+0x00000000001acbd0 : xor eax, 0xf825ab99 ; pop rsi ; jmp 0x11e7d53d
+0x00000000001acbcf : xor rax, 0xfffffffff825ab99 ; pop rsi ; jmp 0x11e7d53e
+
+Unique gadgets found: 189

@@ -1,0 +1,29 @@
+Gadgets information
+============================================================
+0x00000000001bc3da : add byte ptr [rax], al ; add byte ptr [rax], al ; push rax ; pop r9 ; clc ; ret 0x6e1f
+0x00000000001bc3dc : add byte ptr [rax], al ; push rax ; pop r9 ; clc ; ret 0x6e1f
+0x000000000002632c : and al, 0x1c ; pop r8 ; pop r9 ; jmp 0x26161
+0x000000000002632b : and al, 0x1c ; pop r8 ; pop r9 ; jmp 0x26162
+0x000000000002632a : mov dword ptr [rsp + 0x1c], eax ; pop r8 ; pop r9 ; jmp 0x26163
+0x0000000000025d51 : mov ebp, eax ; pop r9 ; jmp 0x25be7
+0x0000000000028b40 : mov edi, eax ; pop r9 ; jmp 0x28577
+0x0000000000028b3f : mov r15d, eax ; pop r9 ; jmp 0x28578
+0x0000000000025d4f : pop r8 ; mov ebp, eax ; pop r9 ; jmp 0x25be9
+0x0000000000028b3d : pop r8 ; mov r15d, eax ; pop r9 ; jmp 0x2857a
+0x000000000002632e : pop r8 ; pop r9 ; jmp 0x2615f
+0x00000000001bc3df : pop r9 ; clc ; ret 0x6e1f
+0x00000000000eb625 : pop r9 ; je 0xeae1d ; jmp 0xea408
+0x0000000000025d53 : pop r9 ; jmp 0x25be5
+0x0000000000026330 : pop r9 ; jmp 0x2615d
+0x0000000000028b42 : pop r9 ; jmp 0x28575
+0x000000000002ab4e : pop r9 ; mov r15d, eax ; pop r10 ; jmp 0x2a922
+0x0000000000025d50 : pop rax ; mov ebp, eax ; pop r9 ; jmp 0x25be8
+0x0000000000028b3e : pop rax ; mov r15d, eax ; pop r9 ; jmp 0x28579
+0x00000000000eb624 : pop rax ; pop r9 ; je 0xeae1e ; jmp 0xea409
+0x000000000002632f : pop rax ; pop r9 ; jmp 0x2615e
+0x00000000001bc3de : push rax ; pop r9 ; clc ; ret 0x6e1f
+0x0000000000025d4e : rol dword ptr [rcx + 0x58], cl ; mov ebp, eax ; pop r9 ; jmp 0x25bea
+0x000000000002632d : sbb al, 0x41 ; pop rax ; pop r9 ; jmp 0x26160
+0x0000000000025d4c : xor bh, bh ; rol dword ptr [rcx + 0x58], cl ; mov ebp, eax ; pop r9 ; jmp 0x25bec
+
+Unique gadgets found: 25

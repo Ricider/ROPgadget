@@ -1,0 +1,16 @@
+Finding dispatchers
+Gadgets information
+============================================================
+0x0000000000000b83 : adc esp, dword ptr [rax] ; cmc ; pop rdx ; jge 0xb56 ; jmp rsp
+0x0000000000000b84 : and ch, dh ; pop rdx ; jge 0xb55 ; jmp rsp
+0x0000000000000b85 : cmc ; pop rdx ; jge 0xb54 ; jmp rsp
+0x0000000000000b81 : mov dl, 0x8b ; adc esp, dword ptr [rax] ; cmc ; pop rdx ; jge 0xb58 ; jmp rsp
+0x0000000000000b82 : mov edx, dword ptr [rbx] ; and ch, dh ; pop rdx ; jge 0xb57 ; jmp rsp
+0x0000000000096c11 : pop rbp ; add byte ptr [rax], al ; loopne 0x96c1d ; stc ; jmp rsp
+0x000000000009dee9 : pop rcx ; add byte ptr [rax], al ; push rsp ; xchg eax, edx ; stc ; jmp rcx
+0x000000000009e46d : pop rdi ; add byte ptr [rax], al ; jo 0x9e42a ; stc ; jmp rdi
+0x0000000000000b87 : pop rdx ; jge 0xb52 ; jmp rsp
+0x0000000000000b86 : pop rdx ; jge 0xb53 ; jmp rsp
+0x0000000000095bb6 : pop rsp ; in al, 0x2e ; call rsp
+
+Unique gadgets found: 11

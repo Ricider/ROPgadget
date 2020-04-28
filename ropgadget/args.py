@@ -96,7 +96,10 @@ architectures supported:
         parser.add_argument("--noinstr",            action="store_true",              help="Disable the gadget instructions console printing")
         parser.add_argument("--dump",               action="store_true",              help="Outputs the gadget bytes")
         parser.add_argument("--silent",             action="store_true",              help="Disables printing of gadgets during analysis")
+        
         parser.add_argument("--disp",               action="store_true",              help="Enable dispatcher search engine")
+        parser.add_argument("--sysargs",            type=int, metavar="<nsysargs>",   default=-1, help="Search for gadgets that write to any of the required system call registers (Linux only)")
+        parser.add_argument("--sysargsall",         type=int, metavar="<nsysargs>",   default=-1, help="Search for gadgets that write to all required system call registers (Linux only)")
         
         self.__args = parser.parse_args(arguments)
 

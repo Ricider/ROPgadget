@@ -186,7 +186,39 @@ class Gadgets(object):
         
         return False
 
-    def __gadgetsFinding(self, section, gadgets, arch, mode, findDisp):
+    def __getSysArgsWritten(self, gadget, numArgs):
+        
+        # rdi, rsi, rdx, r10, r8, r9
+        sysRegs = [
+            [X86_REG_RDI, X86_REG_EDI],
+            [X86_REG_RSI, X86_REG_ESI],
+            [X86_REG_RDX, X86_REG_EDX],
+            [X86_REG_R10],
+            [X86_REG_R8],
+            [X86_REG_R9],
+        ]
+        
+        if numArgs >= len(sysRegs):
+            return False
+
+        written = {}
+        for insn in gadget:
+            (regsRead, regsWritten) = insn.regs_access() # Causes double free error when ud0 instruction encountered
+            for i in range(0, numArgs): # Checks if this instruction writes to any of the system call registers
+                regs = sysRegs[i]
+                for reg in regs:
+                    if reg in regsWritten:
+                        key = insn.reg_name(regs[0])
+                        written[key] = True
+                        break
+
+        return written
+        #if strict:
+        #    return len(written.keys()) >= numArgs
+        #else:
+        #    return len(written.keys()) > 0
+
+    def __gadgetsFinding(self, section, gadgets, arch, mode, findDisp, sysargs, sysargsall):
 
         PREV_BYTES = 9 # Number of bytes prior to the gadget to store.
 
@@ -198,6 +230,19 @@ class Gadgets(object):
         if findDisp:
             print('Finding dispatchers')
             md.detail = True
+
+        # Filter gadgets to adhere to system call registers
+        strictSysArgs = False # Must write to all required system registers
+        numSysArgs = -1
+        if sysargsall != -1: # set the stricter first if both are set by accident
+            numSysArgs = sysargsall
+            strictSysArgs = True
+            md.detail = True
+        else:
+            if sysargs != -1:
+                numSysArgs = sysargs
+                md.detail = True
+        print('numSysArgs=%i, strictSysArgs=%s' % (numSysArgs, strictSysArgs))
 
         for gad_op, gad_size, gad_align in gadgets:
             allRefRet = [m.start() for m in re.finditer(gad_op, opcodes)]
@@ -215,20 +260,35 @@ class Gadgets(object):
                         if self.passClean(decodes):
                             continue
 
-                        # Check if this gadget is a dispatcher gadget
-                        if findDisp:
+                        writtenStr = ''
+                        if findDisp or numSysArgs >= 0: 
                             g = md.disasm(code, sec_vaddr+ref)
                             g = list(g)
                             g.reverse()
-                            if not self.__isDispatcher(g):
-                                continue
-                           
+                            if findDisp: # Check if this gadget is a dispatcher gadget
+                                if not self.__isDispatcher(g):
+                                    continue
+                            if numSysArgs >= 0: # Filter out gadget if it does not adhere to system call register requirements
+                                written = self.__getSysArgsWritten(g, numSysArgs)
+                                if strictSysArgs:
+                                    if len(written.keys()) < numSysArgs:
+                                        continue
+                                else:
+                                    if len(written.keys()) == 0:
+                                        continue
+                            
+                                writtenStr = writtenStr + ('Regs written: ')    
+                                for reg in written.keys():
+                                    writtenStr = writtenStr + reg + ', '
+   
                         off = self.__offset
                         vaddr = off+sec_vaddr+start
                         g = {"vaddr" :  vaddr}
                         if not self.__options.noinstr:
                             g["gadget"] = " ; ".join("{}{}{}".format(mnemonic, " " if op_str else "", op_str)
                                                      for _, _, mnemonic, op_str in decodes).replace("  ", " ")
+                            if numSysArgs >= 0:
+                                g["gadget"] = g["gadget"] + " ; " + writtenStr
                         if self.__options.callPreceded:
                             prevBytesAddr = max(sec_vaddr, vaddr - PREV_BYTES)
                             g["prev"] = opcodes[prevBytesAddr-sec_vaddr:vaddr-sec_vaddr]
@@ -237,7 +297,7 @@ class Gadgets(object):
                         ret.append(g)
         return ret
 
-    def addROPGadgets(self, section):
+    def addROPGadgets(self, section, sysargs, sysargsall):
 
         arch = self.__binary.getArch()
         arch_mode = self.__binary.getArchMode()
@@ -297,11 +357,11 @@ class Gadgets(object):
             return None
 
         if len(gadgets) > 0 :
-            return self.__gadgetsFinding(section, gadgets, arch, arch_mode + arch_endian, False)
+            return self.__gadgetsFinding(section, gadgets, arch, arch_mode + arch_endian, False, sysargs, sysargsall)
         return gadgets
 
 
-    def addJOPGadgets(self, section, findDisp):
+    def addJOPGadgets(self, section, findDisp, sysargs, sysargsall):
         arch = self.__binary.getArch()
         arch_mode = self.__binary.getArchMode()
         arch_endian = self.__binary.getEndian()
@@ -404,10 +464,10 @@ class Gadgets(object):
             return None
 
         if len(gadgets) > 0 :
-            return self.__gadgetsFinding(section, gadgets, arch, arch_mode + arch_endian, findDisp)
+            return self.__gadgetsFinding(section, gadgets, arch, arch_mode + arch_endian, findDisp, sysargs, sysargsall)
         return gadgets
 
-    def addSYSGadgets(self, section):
+    def addSYSGadgets(self, section, sysargs, sysargsall):
 
         arch = self.__binary.getArch()
         arch_mode = self.__binary.getArchMode()
@@ -453,7 +513,7 @@ class Gadgets(object):
             return None
 
         if len(gadgets) > 0 :
-            return self.__gadgetsFinding(section, gadgets, arch, arch_mode + arch_endian, False)
+            return self.__gadgetsFinding(section, gadgets, arch, arch_mode + arch_endian, False, sysargs, sysargsall)
         return []
 
 
