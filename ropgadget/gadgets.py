@@ -188,6 +188,8 @@ class Gadgets(object):
 
     def __getSysArgsWritten(self, gadget, numArgs):
         
+        written = {}
+        
         # rdi, rsi, rdx, r10, r8, r9
         sysRegs = [
             [X86_REG_RDI, X86_REG_EDI],
@@ -197,13 +199,29 @@ class Gadgets(object):
             [X86_REG_R8],
             [X86_REG_R9],
         ]
-        
+ 
         if numArgs >= len(sysRegs):
-            return False
+            return written
 
-        written = {}
+        regRax = [X86_REG_RAX, X86_REG_EAX]    
+        raxWritten = False 
+        isSys = False
+ 
         for insn in gadget:
+            #print("0x%x:\t%s\t%s (isSys=%s)" % (insn.address, insn.mnemonic, insn.op_str, 'syscall' in insn.mnemonic))
+            if 'syscall' in insn.mnemonic: #insn.opcode == X86_INS_SYSCALL:
+                #print("0x%x:\t%s\t%s (isSys=%s)" % (insn.address, insn.mnemonic, insn.op_str, insn.opcode==X86_INS_SYSCALL))
+                isSys = True
+
             (regsRead, regsWritten) = insn.regs_access() # Causes double free error when ud0 instruction encountered
+            
+            # check if rax was written
+            if not raxWritten:
+                for reg in regRax:
+                    if reg in regsWritten:
+                        raxWritten = True
+                        break
+                
             for i in range(0, numArgs): # Checks if this instruction writes to any of the system call registers
                 regs = sysRegs[i]
                 for reg in regs:
@@ -212,11 +230,7 @@ class Gadgets(object):
                         written[key] = True
                         break
 
-        return written
-        #if strict:
-        #    return len(written.keys()) >= numArgs
-        #else:
-        #    return len(written.keys()) > 0
+        return (written, isSys, raxWritten)
 
     def __gadgetsFinding(self, section, gadgets, arch, mode, findDisp, sysargs, sysargsall):
 
@@ -269,7 +283,11 @@ class Gadgets(object):
                                 if not self.__isDispatcher(g):
                                     continue
                             if numSysArgs >= 0: # Filter out gadget if it does not adhere to system call register requirements
-                                written = self.__getSysArgsWritten(g, numSysArgs)
+                                (written, isSys, raxWritten) = self.__getSysArgsWritten(g, numSysArgs)
+                                print('%i regs written, isSys=%s, raxWritten=%s' % (len(written.keys()), isSys, raxWritten))
+                                if isSys and not raxWritten: # rax must have a depth of zero in syscall gadgets
+                                    continue
+
                                 if strictSysArgs:
                                     if len(written.keys()) < numSysArgs:
                                         continue
@@ -280,7 +298,9 @@ class Gadgets(object):
                                 writtenStr = writtenStr + ('Regs written: ')    
                                 for reg in written.keys():
                                     writtenStr = writtenStr + reg + ', '
-   
+                                if raxWritten:
+                                    writtenStr = writtenStr + 'rax'  
+ 
                         off = self.__offset
                         vaddr = off+sec_vaddr+start
                         g = {"vaddr" :  vaddr}
