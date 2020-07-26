@@ -81,6 +81,7 @@ class Core(cmd.Cmd):
             if not self.__options.norop: self.__gadgets += G.addROPGadgets(section, self.__options.sysargs, self.__options.sysargsall)
             if not self.__options.nojop: self.__gadgets += G.addJOPGadgets(section, self.__options.disp, self.__options.sysargs, self.__options.sysargsall)
             if not self.__options.nosys: self.__gadgets += G.addSYSGadgets(section, self.__options.sysargs, self.__options.sysargsall)
+            if not self.__options.nobop: self.__gadgets += G.addBOPGadgets(section, self.__options.disp, self.__options.sysargs, self.__options.sysargsall)
 
         # Delete duplicate gadgets
         if not self.__options.all and not self.__options.noinstr:

@@ -381,6 +381,36 @@ class Gadgets(object):
         return gadgets
 
 
+    def addBOPGadgets(self, section, findDisp, sysargs, sysargsall):
+        arch = self.__binary.getArch()
+        arch_mode = self.__binary.getArchMode()
+        arch_endian = self.__binary.getEndian()
+        if arch  == CS_ARCH_X86:
+            gadgets = [
+                               [b"\x74[\x00-\xff]{1}", 2, 1],                     # 1 byte
+                               [b"\x7f[\x00-\xff]{1}", 2, 1],                     # 1 byte
+                               [b"\x7d[\x00-\xff]{1}", 2, 1],                     # 1 byte
+                               [b"\x7e[\x00-\xff]{1}", 2, 1],                     # 1 byte
+                               [b"\x76[\x00-\xff]{1}", 2, 1],                     # 1 byte
+                               [b"\x72[\x00-\xff]{1}", 2, 1],                     # 1 byte
+                               [b"\x73[\x00-\xff]{1}", 2, 1],                     # 1 byte
+                               [b"\x77[\x00-\xff]{1}", 2, 1],                     # 1 byte
+                      ]
+
+
+        elif arch == CS_ARCH_MIPS: gadgets = []
+        elif arch == CS_ARCH_PPC:    gadgets = [] # PPC architecture doesn't contains reg branch instruction
+        elif arch == CS_ARCH_SPARC:  gadgets = []
+        elif arch == CS_ARCH_ARM64: gadgets = []
+        elif arch == CS_ARCH_ARM: gadgets = []
+        else:
+            print("Gadgets().addBOPGadgets() - Architecture not supported")
+            return None
+
+        if len(gadgets) > 0 :
+            return self.__gadgetsFinding(section, gadgets, arch, arch_mode + arch_endian, findDisp, sysargs, sysargsall)
+        return gadgets
+
     def addJOPGadgets(self, section, findDisp, sysargs, sysargsall):
         arch = self.__binary.getArch()
         arch_mode = self.__binary.getArchMode()
